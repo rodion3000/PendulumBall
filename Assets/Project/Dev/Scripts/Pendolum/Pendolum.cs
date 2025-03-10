@@ -12,6 +12,7 @@ public class Pendulum : MonoBehaviour
 
     private float currentAngle;
     private float direction = 1f; // Направление колебания
+    private bool isBallOnPendulum = false; // Добавлена переменная для отслеживания наличия шарика
 
     void Start()
     {
@@ -42,17 +43,19 @@ public class Pendulum : MonoBehaviour
 
     private void SpawnRandomPrefab()
     {
-        // Генерируем случайный индекс от 0 до длины массива префабов
-        int randomIndex = Random.Range(0, prefabs.Length);
-        // Создаем экземпляр префаба в точке спавна, устанавливаем родителем маятник
-        currentPrefab = Instantiate(prefabs[randomIndex], spawnPoint.position, spawnPoint.rotation);
-        currentPrefab.transform.SetParent(transform); // Делает префаб дочерним к маятнику
+        if (!isBallOnPendulum) 
+        {
+            int randomIndex = Random.Range(0, prefabs.Length);
+            currentPrefab = Instantiate(prefabs[randomIndex], spawnPoint.position, spawnPoint.rotation);
+            currentPrefab.transform.SetParent(transform); // Делает префаб дочерним к маятнику
+            isBallOnPendulum = true; 
+        }
     }
 
     private IEnumerator SpawnPrefabAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay); // Ждем указанное время
-        SpawnRandomPrefab(); // Создаем новый префаб
+        SpawnRandomPrefab(); // Создаем новый префаб только если на маятнике нет шарика
         StartCoroutine(SpawnPrefabAfterDelay(delay)); // Запускаем снова корутину для создания нового префаба через 3 секунды
     }
 
@@ -83,6 +86,7 @@ public class Pendulum : MonoBehaviour
             {
                 rb.isKinematic = false; // Делает физику активной для свободного падения
             }
+            isBallOnPendulum = false; // Обновляем статус при удалении шарика 
         }
     }
 }
