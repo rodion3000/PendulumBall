@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4687063590641444039}
   - component: {fileID: 17351783798515139}
   - component: {fileID: 4941306255752103921}
+  - component: {fileID: 1380129967505929558}
   m_Layer: 0
   m_Name: Red Circle
   m_TagString: Untagged
@@ -148,3 +149,16 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
+--- !u!114 &1380129967505929558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4090663630942104485}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1675749515631e4438bf93f8ea90b9f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ballColor: {r: 1, g: 0.050980397, b: 0.050980397, a: 0}

@@ -8,11 +8,14 @@ public class Pendulum : MonoBehaviour
     [SerializeField] private float swingSpeed = 2f;   // Скорость колебания
     [SerializeField] private GameObject[] prefabs;    // Массив для хранения префабов
     [SerializeField] private Transform spawnPoint;     // Точка спавна
-    private GameObject currentPrefab;
 
+    private GameObject currentPrefab;
     private float currentAngle;
     private float direction = 1f; // Направление колебания
-    private bool isBallOnPendulum = false; // Добавлена переменная для отслеживания наличия шарика
+    private bool isBallOnPendulum = false; // Наличие шарика на маятнике
+
+    public delegate void BallReleased(GameObject ball);
+    public event BallReleased OnBallReleased; // Событие для оповещения об отзывании струны
 
     void Start()
     {
@@ -22,22 +25,19 @@ public class Pendulum : MonoBehaviour
 
     void Update()
     {
-        // Вычисляем текущее угловое значение на основе времени
+        // Управление колебанием
         currentAngle += direction * swingSpeed * Time.deltaTime;
 
-        // Меняем направление, если угол выходит за пределы
         if (currentAngle >= swingAngle || currentAngle <= -swingAngle)
         {
             direction *= -1f; // Изменяем направление
         }
 
-        // Обновляем вращение объекта вокруг оси Z
         transform.rotation = Quaternion.Euler(0, 0, currentAngle);
 
-        if (Input.GetMouseButtonDown(0)) // Проверка нажатия на экран
+        if (Input.GetMouseButtonDown(0)) // Проверка нажатия
         {
-            ToggleRigidbody();
-            DetachPrefabFromSpawnPoint(); // Отвязываем префаб от spawnPoint
+            DetachPrefabFromSpawnPoint(); // Отвязываем префаб
         }
     }
 
@@ -55,38 +55,30 @@ public class Pendulum : MonoBehaviour
     private IEnumerator SpawnPrefabAfterDelay(float delay)
     {
         yield return new WaitForSeconds(delay); // Ждем указанное время
-        SpawnRandomPrefab(); // Создаем новый префаб только если на маятнике нет шарика
-        StartCoroutine(SpawnPrefabAfterDelay(delay)); // Запускаем снова корутину для создания нового префаба через 3 секунды
-    }
-
-    private void ToggleRigidbody()
-    {
-        if (currentPrefab != null)
-        {
-            Rigidbody2D rb = currentPrefab.GetComponent<Rigidbody2D>();
-            if (rb != null)
-            {
-                rb.isKinematic = !rb.isKinematic; // Переключает значение isKinematic
-            }
-        }
+        SpawnRandomPrefab(); // Создаем новый префаб
+        StartCoroutine(SpawnPrefabAfterDelay(delay)); // Запускаем снова корутину
     }
 
     private void DetachPrefabFromSpawnPoint()
     {
         if (currentPrefab != null)
         {
-            // Устанавливает родителем null, чтобы отвязать
+            // Отвязываем префаб и повторно устанавливаем его положение и ориентацию
             currentPrefab.transform.SetParent(null);
-            // Закрепите позицию префаба, чтобы он не перемещался
-            currentPrefab.transform.position = currentPrefab.transform.position;
-            currentPrefab.transform.rotation = currentPrefab.transform.rotation; // Закрепляем ориентацию
+            // Закрепляем позицию и ориентацию
+            currentPrefab.transform.position = currentPrefab.transform.position; 
+            currentPrefab.transform.rotation = currentPrefab.transform.rotation;
 
+            // Активация физики
             Rigidbody2D rb = currentPrefab.GetComponent<Rigidbody2D>();
             if (rb != null)
             {
-                rb.isKinematic = false; // Делает физику активной для свободного падения
+                rb.isKinematic = false; // Делает физику активной для падения
             }
-            isBallOnPendulum = false; // Обновляем статус при удалении шарика 
+            isBallOnPendulum = false;
+
+            // Вызываем событие об освобождении шара
+            OnBallReleased?.Invoke(currentPrefab);
         }
     }
 }
