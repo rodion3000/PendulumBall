@@ -5,8 +5,11 @@ using UnityEngine;
 public class DropZone : MonoBehaviour
 {
     public List<Ball> ballsInZone = new List<Ball>();
-    public ParticleSystem disappearEffectPrefab; // Префаб Particle System для эффекта исчезновения
+    public ParticleSystem disappearEffectPrefab;
+
     private Dictionary<Color, int> colorCounts = new Dictionary<Color, int>();
+    private bool isFilled = false; // Новый флаг для отслеживания заполненности зоны
+    private int totalBallsInZone = 0; // Общее количество шаров в зоне
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -14,6 +17,7 @@ public class DropZone : MonoBehaviour
         if (ball != null)
         {
             ballsInZone.Add(ball);
+            totalBallsInZone++; // Увеличиваем общее количество шаров в зоне
 
             if (!colorCounts.ContainsKey(ball.ballColor))
             {
@@ -21,9 +25,17 @@ public class DropZone : MonoBehaviour
             }
             colorCounts[ball.ballColor]++;
 
+            // Если добавленный шар сделал цвет с количеством 3 или больше, активируем корутину
             if (colorCounts[ball.ballColor] >= 3)
             {
                 StartCoroutine(CheckAndDestroyAfterDelay());
+            }
+
+            // Уведомляем GameManager, если вся зона заполнилась
+            if (totalBallsInZone >= 3 && !isFilled)
+            {
+                isFilled = true; // Отмечаем, что зона заполнена
+                FindObjectOfType<GameManager>().OnDropZoneFilled(); // Уведомляем GameManager
             }
         }
     }
@@ -34,8 +46,9 @@ public class DropZone : MonoBehaviour
         if (ball != null)
         {
             ballsInZone.Remove(ball);
-            colorCounts[ball.ballColor]--;
+            totalBallsInZone--; // Уменьшаем общее количество шаров в зоне
 
+            colorCounts[ball.ballColor]--;
             if (colorCounts[ball.ballColor] <= 0)
             {
                 colorCounts.Remove(ball.ballColor);
@@ -66,6 +79,7 @@ public class DropZone : MonoBehaviour
 
                 ballsInZone.Clear(); // Очищаем список шаров в зоне
                 colorCounts.Clear(); // Очищаем счетчики цветов
+                totalBallsInZone = 0; // Обнуляем общее количество шаров
                 yield break; // Выход из корутины, если нашли и удалили шары
             }
         }
