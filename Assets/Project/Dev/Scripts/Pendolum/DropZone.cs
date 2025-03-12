@@ -5,6 +5,7 @@ using UnityEngine;
 public class DropZone : MonoBehaviour
 {
     public List<Ball> ballsInZone = new List<Ball>();
+    public ParticleSystem disappearEffectPrefab; // Префаб Particle System для эффекта исчезновения
     private Dictionary<Color, int> colorCounts = new Dictionary<Color, int>();
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -13,15 +14,13 @@ public class DropZone : MonoBehaviour
         if (ball != null)
         {
             ballsInZone.Add(ball);
-            
-            // Увеличиваем счетчик для данного цвета
+
             if (!colorCounts.ContainsKey(ball.ballColor))
             {
                 colorCounts[ball.ballColor] = 0;
             }
             colorCounts[ball.ballColor]++;
-            
-            // Проверяем, если у нас есть 3 шара одного цвета
+
             if (colorCounts[ball.ballColor] >= 3)
             {
                 StartCoroutine(CheckAndDestroyAfterDelay());
@@ -37,7 +36,6 @@ public class DropZone : MonoBehaviour
             ballsInZone.Remove(ball);
             colorCounts[ball.ballColor]--;
 
-            // Если счетчик стал равен нулю, удаляем цвет из словаря
             if (colorCounts[ball.ballColor] <= 0)
             {
                 colorCounts.Remove(ball.ballColor);
@@ -47,19 +45,25 @@ public class DropZone : MonoBehaviour
 
     private IEnumerator CheckAndDestroyAfterDelay()
     {
-        // Ждем 2 секунды
-        yield return new WaitForSeconds(2f);
-        
+        // Ждем 0.5 секунды
+        yield return new WaitForSeconds(0.5f);
+
         // Проверяем, есть ли три шара одного цвета в зоне
         foreach (var color in colorCounts.Keys)
         {
             if (colorCounts[color] >= 3) // Если есть 3 и более одинаковых
             {
-                // Уничтожаем все шары в зоне
                 foreach (Ball ball in new List<Ball>(ballsInZone)) // создаем копию списка для безопасного удаления
                 {
+                    // Создаем эффект исчезновения
+                    ParticleSystem effect = Instantiate(disappearEffectPrefab, ball.transform.position, Quaternion.identity);
+                    effect.Play();
+                    Destroy(effect.gameObject, effect.main.duration); // Удаляем эффект после его завершения
+
+                    // Удаляем шар
                     Destroy(ball.gameObject);
                 }
+
                 ballsInZone.Clear(); // Очищаем список шаров в зоне
                 colorCounts.Clear(); // Очищаем счетчики цветов
                 yield break; // Выход из корутины, если нашли и удалили шары

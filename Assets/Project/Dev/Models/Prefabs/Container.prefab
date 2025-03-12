@@ -171,7 +171,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a9a374a527aebd48a8e8f9eda8ca7a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoneIndex: 3
+  ballsInZone: []
+  disappearEffectPrefab: {fileID: 7226888052703040407, guid: 7ec363c8df426644ea85f8d6d570561c, type: 3}
 --- !u!1 &1219486115034089158
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,7 +344,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a9a374a527aebd48a8e8f9eda8ca7a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoneIndex: 4
+  ballsInZone: []
+  disappearEffectPrefab: {fileID: 7226888052703040407, guid: 7ec363c8df426644ea85f8d6d570561c, type: 3}
 --- !u!1 &1590889839263306384
 GameObject:
   m_ObjectHideFlags: 0
@@ -645,7 +647,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a9a374a527aebd48a8e8f9eda8ca7a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoneIndex: 8
+  ballsInZone: []
+  disappearEffectPrefab: {fileID: 7226888052703040407, guid: 7ec363c8df426644ea85f8d6d570561c, type: 3}
 --- !u!1 &4888681805846788020
 GameObject:
   m_ObjectHideFlags: 0
@@ -817,7 +820,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a9a374a527aebd48a8e8f9eda8ca7a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoneIndex: 1
+  ballsInZone: []
+  disappearEffectPrefab: {fileID: 7226888052703040407, guid: 7ec363c8df426644ea85f8d6d570561c, type: 3}
 --- !u!1 &5192550317663812124
 GameObject:
   m_ObjectHideFlags: 0
@@ -989,7 +993,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a9a374a527aebd48a8e8f9eda8ca7a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoneIndex: 7
+  ballsInZone: []
+  disappearEffectPrefab: {fileID: 7226888052703040407, guid: 7ec363c8df426644ea85f8d6d570561c, type: 3}
 --- !u!1 &5297449642148073601
 GameObject:
   m_ObjectHideFlags: 0
@@ -1595,7 +1600,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a9a374a527aebd48a8e8f9eda8ca7a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoneIndex: 6
+  ballsInZone: []
+  disappearEffectPrefab: {fileID: 7226888052703040407, guid: 7ec363c8df426644ea85f8d6d570561c, type: 3}
 --- !u!1 &7312090178280279609
 GameObject:
   m_ObjectHideFlags: 0
@@ -1767,7 +1773,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a9a374a527aebd48a8e8f9eda8ca7a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoneIndex: 5
+  ballsInZone: []
+  disappearEffectPrefab: {fileID: 7226888052703040407, guid: 7ec363c8df426644ea85f8d6d570561c, type: 3}
 --- !u!1 &7716851952084709991
 GameObject:
   m_ObjectHideFlags: 0
@@ -1939,7 +1946,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a9a374a527aebd48a8e8f9eda8ca7a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoneIndex: 2
+  ballsInZone: []
+  disappearEffectPrefab: {fileID: 7226888052703040407, guid: 7ec363c8df426644ea85f8d6d570561c, type: 3}
 --- !u!1 &7907147011185474718
 GameObject:
   m_ObjectHideFlags: 0
