@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: -2960142710205425860}
   m_Layer: 0
   m_Name: Blue Circle
-  m_TagString: Untagged
+  m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0, g: 0.27541065, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -161,4 +161,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1675749515631e4438bf93f8ea90b9f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ballColor: {r: 0, g: 0.27450982, b: 1, a: 0}
+  ballColor: {r: 0, g: 0, b: 1, a: 1}

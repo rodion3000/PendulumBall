@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public DropZone[] dropZones; // Массив всех триггер-объектов
     private int filledDropZonesCount = 0; // Количество заполненных триггеров
+    public static int totalScore = 0; // Общее количество очков
 
     private void Start()
     {
@@ -28,5 +29,12 @@ public class GameManager : MonoBehaviour
     {
         // Здесь укажите название следующей сцены
         SceneManager.LoadScene("ScoreScene");
+    }
+
+    // Метод для добавления очков
+    public void AddScore(int score)
+    {
+        totalScore += score; // Добавляем очки к общему счету
+        Debug.Log($"Current Score: {totalScore}"); // Выводим текущий счет в консоль
     }
 }
