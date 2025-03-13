@@ -83,7 +83,6 @@ public class DropZone : MonoBehaviour
                 score = 100;
             }
 
-
             // Лог, перед начислением очков
             Debug.Log($"Attempting to add score for {color}: {score} points.");
 
