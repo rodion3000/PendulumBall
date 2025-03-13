@@ -8,7 +8,7 @@ public class DropZone : MonoBehaviour
     public ParticleSystem disappearEffectPrefab;
 
     private Dictionary<Color, int> colorCounts = new Dictionary<Color, int>();
-    private bool isFilled = false; // Новый флаг для отслеживания заполненности зоны
+    private bool isFilled = false; // Флаг для отслеживания заполненности зоны
     private int totalBallsInZone = 0; // Общее количество шаров в зоне
 
     private void OnTriggerEnter2D(Collider2D other)
@@ -53,65 +53,66 @@ public class DropZone : MonoBehaviour
             {
                 colorCounts.Remove(ball.ballColor);
             }
+
+            // Если зона становится пустой
+            if (isFilled && totalBallsInZone < 3)
+            {
+                isFilled = false; // Зона больше не заполнена
+                FindObjectOfType<GameManager>().OnDropZoneUnfilled(); // Уведомляем GameManager
+            }
         }
     }
 
     private IEnumerator CheckAndDestroyAfterDelay()
-{
-    // Ждем 0.5 секунды
-    yield return new WaitForSeconds(0.5f);
-
-    // Проверяем, есть ли три шара одного цвета в зоне
-    foreach (var color in colorCounts.Keys)
     {
-        if (colorCounts[color] >= 3) // Если есть 3 и более одинаковых
+        // Ждем 0.5 секунды
+        yield return new WaitForSeconds(0.5f);
+
+        // Проверяем, есть ли три шара одного цвета в зоне
+        foreach (var color in colorCounts.Keys)
         {
-            int score = 0; // Переменная для хранения очков
-
-            // Определяем количество очков в зависимости от цвета шара
-            // Здесь используем if-else для определения количества очков
-            if (color == Color.blue) // Для цвета Blue
+            if (colorCounts[color] >= 3) // Если есть 3 и более одинаковых
             {
-                score = 50;
-            }
-            else if (color == Color.green) // Для цвета Green
-            {
-                score = 70;
-            }
-            else if (color == Color.red) // Для цвета Red
-            {
-                score = 100;
-            }
+                int score = 0; // Переменная для хранения очков
 
-            // Лог, перед начислением очков
-            Debug.Log($"Attempting to add score for {color}: {score} points.");
+                // Определяем количество очков в зависимости от цвета шара
+                if (color == Color.blue) // Для цвета Blue
+                {
+                    score = 50;
+                }
+                else if (color == Color.green) // Для цвета Green
+                {
+                    score = 70;
+                }
+                else if (color == Color.red) // Для цвета Red
+                {
+                    score = 100;
+                }
 
-            // Начисляем очки в GameManager
-            if (score > 0)
-            {
-                FindObjectOfType<GameManager>().AddScore(score);
-                // Лог для подтверждения добавления очков
-                Debug.Log($"Added {score} points for {color} balls.");
+                // Начисляем очки в GameManager
+                if (score > 0)
+                {
+                    FindObjectOfType<GameManager>().AddScore(score);
+                }
+
+                foreach (Ball ball in new List<Ball>(ballsInZone)) // создаем копию списка для безопасного удаления
+                {
+                    // Создаем эффект исчезновения
+                    ParticleSystem effect = Instantiate(disappearEffectPrefab, ball.transform.position, Quaternion.identity);
+                    effect.Play();
+                    Destroy(effect.gameObject, effect.main.duration); // Удаляем эффект после его завершения
+
+                    // Удаляем шар
+                    Destroy(ball.gameObject);
+                }
+
+                ballsInZone.Clear(); // Очищаем список шаров в зоне
+                colorCounts.Clear(); // Очищаем счетчики цветов
+                totalBallsInZone = 0; // Обнуляем общее количество шаров
+                yield break; // Выход из корутины, если нашли и удалили шары
             }
-
-            foreach (Ball ball in new List<Ball>(ballsInZone)) // создаем копию списка для безопасного удаления
-            {
-                // Создаем эффект исчезновения
-                ParticleSystem effect = Instantiate(disappearEffectPrefab, ball.transform.position, Quaternion.identity);
-                effect.Play();
-                Destroy(effect.gameObject, effect.main.duration); // Удаляем эффект после его завершения
-
-                // Удаляем шар
-                Destroy(ball.gameObject);
-            }
-
-            ballsInZone.Clear(); // Очищаем список шаров в зоне
-            colorCounts.Clear(); // Очищаем счетчики цветов
-            totalBallsInZone = 0; // Обнуляем общее количество шаров
-            yield break; // Выход из корутины, если нашли и удалили шары
         }
     }
-}
 }
     
 

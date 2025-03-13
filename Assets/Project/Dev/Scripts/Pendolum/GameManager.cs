@@ -25,6 +25,11 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void OnDropZoneUnfilled()
+    {
+        filledDropZonesCount--; // Уменьшаем счётчик заполненных зон
+    }
+
     private void LoadNextScene()
     {
         // Здесь укажите название следующей сцены
@@ -37,5 +42,4 @@ public class GameManager : MonoBehaviour
         totalScore += score; // Добавляем очки к общему счету
         Debug.Log($"Current Score: {totalScore}"); // Выводим текущий счет в консоль
     }
-    
 }
